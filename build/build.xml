@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="php3" default="build" basedir=".">
+
+    <target name="build" depends="vars, copy, config, composer, migrate, crontab, symlink" />
+
+    <target name="vars">
+        <property name="domain" value="adverplat.ru" />
+        <php returnProperty="datetime" function="date">
+            <param value="Y-m-d-H-i-s" />
+        </php>
+        <resolvepath propertyName="target.dir" path="/home/maxim/domains/pr-of-it.mail/${datetime}" />
+    </target>
+
+    <target name="copy">
+        <copy todir="${target.dir}">
+            <fileset dir="${project.basedir}">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <mkdir dir="${target.dir}/public/Assets" mode="0777" />
+        <mkdir dir="${target.dir}/protected/Cache" mode="0777" />
+    </target>
+
+    <target name="config">
+        <copy file="${target.dir}/build/production/config.php" tofile="${target.dir}/protected/config.php" overwrite="true">
+            <filterchain>
+                <replacetokens begintoken="{{" endtoken="}}">
+                    <token key="domain" value="${domain}" />
+                    <token key="db.password" value="${db.password}" />
+                    <token key="email.password" value="${email.password}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+    </target>
+
+    <target name="composer">
+        <exec dir="${target.dir}" command="composer install" checkreturn="true" passthru="true" />
+    </target>
+
+    <target name="migrate">
+        <exec dir="${target.dir}" command="php protected/t4.php /migrate/up" checkreturn="true" passthru="true" />
+    </target>
+
+    <target name="crontab">
+        <exec dir="${target.dir}" command="crontab ./build/crontab" passthru="true" />
+    </target>
+
+    <target name="symlink">
+        <symlink target="${target.dir}" link="/home/maxim/domains/pr-of-it.mail/current" overwrite="true" />
+    </target>
+
+</project>

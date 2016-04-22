@@ -1,0 +1,1 @@
+*/5 * * * * php protected/t4.php mail/send
