@@ -1,0 +1,14 @@
+{
+  "name": "scorp7mix/pr-of-it.mail",
+  "description": "Application for Mail MSA for PHP3 sprint on pr-of-it.ru",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Maxim Fedorov",
+      "email": "scorp7mix@gmail.com"
+    }
+  ],
+  "require": {
+    "pr-of-it/t4": "dev-master"
+  }
+}
