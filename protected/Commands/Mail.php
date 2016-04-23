@@ -14,8 +14,6 @@ class Mail
 {
     public function actionSend()
     {
-        Application::instance()->setConfig(new Config(ROOT_PATH_PROTECTED . '/config.php'));
-
         $queue = Queue::find([
             'where'  => 'status = :status',
             'order'  => '__id ',
